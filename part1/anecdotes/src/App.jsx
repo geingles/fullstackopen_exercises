@@ -1,10 +1,6 @@
 import { useState } from 'react'
-
-const Button = ({ handleClick, text }) =>  (
-  <button onClick={handleClick}>
-    {text}
-  </button>
-)
+import { Button } from './components/Button'
+import { Anecdote } from './components/Anecdote'
 
 const App = () => {
   const anecdotes = [
@@ -34,36 +30,16 @@ const App = () => {
     setVotes(newVotes)
   }
   
-  const getMostVoted = () => {
-    const max = Math.max(...votes)
-    const mostVotedIndex = votes.indexOf(max)
-    
-    if(max === 0){
-      return(
-        <p>
-          No votes have been submitted yet.
-        </p>
-      )
-    }
-    return (
-      <>
-        <p>{anecdotes[mostVotedIndex]}</p>
-        <p>Has {max} votes</p>
-      </>
-    )
-  }
-
+  const mostVoted = votes.indexOf(Math.max(...votes))
+  
   return (
     <div>
-      <h1>Anecdote of the day</h1>
-      <p>{anecdotes[selected]}</p>
-      <p>Has {votes[selected]} votes</p>
+      <Anecdote title="Anecdote of the day" anecdote={anecdotes[selected]} votes={votes[selected]} />
       <p>
         <Button handleClick={handleClickVote} text="vote" />
         <Button handleClick={handleClickNext} text="next anecdote" />
       </p>
-      <h1>Anecdote with most votes</h1>
-      {getMostVoted()}
+      <Anecdote title="Anecdote with most votes" anecdote={anecdotes[mostVoted]} votes={votes[mostVoted]} />
     </div>
   )
 }
