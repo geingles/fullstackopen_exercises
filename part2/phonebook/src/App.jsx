@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notifications'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -10,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState([])
   const [noResults, setNewNoResults] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -62,6 +64,13 @@ const App = () => {
             setNewNumber('')
             event.target[0].value = ''
             event.target[1].value = ''
+            setNotificationMessage({
+              message: `Added ${newName}`,
+              statusCode: response.status
+            })
+            setTimeout(() => {
+              setNotificationMessage(null)
+            }, 5000)
           })
           .catch(error => {
             console.log('Unable to save new contact.')
@@ -81,7 +90,22 @@ const App = () => {
             setNewNumber('')
             event.target[0].value = ''
             event.target[1].value = ''
+            setNotificationMessage({
+              message: `${newName} phone number has been modified`,
+              statusCode: response.status
+            })
           })
+          .catch(error => {
+            setNotificationMessage(
+              {
+                message: `Information of ${newName} has already been removed from server`,
+                statusCode: error.response.status
+              }
+            )
+          })
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
       } 
     }
   }
@@ -94,13 +118,22 @@ const App = () => {
         setFilter(filter.filter(person => person.id !== id))
       })
       .catch( error => {
-        console.error(error)
+        setNotificationMessage(
+          {
+            message: `Information of ${newName} has already been removed from server`,
+            statusCode: error.response.status
+          }
+        )
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notificationMessage} />
       <Filter 
         text='filter shown with'
         handleChange={handleFilter}
