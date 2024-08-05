@@ -10,7 +10,6 @@ function App() {
   const [results, setResults] = useState([])
 
   const allCountriesUrl = 'https://studies.cs.helsinki.fi/restcountries/api/all'
-  //const countryUrl = `https://studies.cs.helsinki.fi/restcountries/api/name/${searchName}`
 
   useEffect(() => {
     axios
@@ -22,18 +21,6 @@ function App() {
         setCountryList([])
       })
   }, [])
-
-  /*useEffect(() => {
-    console.log('url...', countryUrl)
-    axios
-      .get(countryUrl)
-      .then(response => {
-        console.log('promise fullfilled', response.data)
-      })
-      .catch(error => {
-        console.log('promise rejected', error.response)
-      })
-  }, [countryUrl])*/
 
   const handleSearchChange = (event) => {
     const searchResults = CountryFilter(countryList, event.target.value)
