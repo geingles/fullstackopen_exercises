@@ -4,7 +4,7 @@ const Notification = ({notification}) => {
         return null
     }
     
-    const color = (notification.statusCode >= 400) ? 'red' : 'green'
+    const color = (notification.statusCode < 400) ? 'green' : 'red'
     
     const notificationStyle = {
         color: color,

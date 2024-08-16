@@ -73,7 +73,13 @@ const App = () => {
             }, 5000)
           })
           .catch(error => {
-            console.log('Unable to save new contact.')
+            setNotificationMessage({
+              message: error.response.data.error,
+              statusCode: error.response.status
+            })
+            setTimeout(() => {
+              setNotificationMessage(null)
+            }, 5000)
           })
 
       } else {
@@ -98,7 +104,7 @@ const App = () => {
           .catch(error => {
             setNotificationMessage(
               {
-                message: `Information of ${newName} has already been removed from server`,
+                message: error.response.data.error,
                 statusCode: error.response.status
               }
             )
